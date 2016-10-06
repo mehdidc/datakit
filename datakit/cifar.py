@@ -2,9 +2,11 @@ from helpers import data_path, dict_apply, dict_apply_recur
 import numpy as np
 import os
 
-def load(which='all', coarse_label=False):
-    assert which in ('all', 'train', 'test')
-    if which == 'all': parts = ['train', 'test']
+from constants import *
+
+def load(which=ALL, coarse_label=False):
+    assert which in (ALL, 'train', 'test')
+    if which == ALL: parts = ['train', 'test']
     else: parts = [which]
     data = {}
     for part_name in parts:
@@ -15,3 +17,5 @@ def load(which='all', coarse_label=False):
         else: y = data_part['fine_labels']
         data[part_name] = {'X': X, 'y': y}
     return data
+
+load_as_iterator = lambda which:as_iterator(load(which=which)[which])
