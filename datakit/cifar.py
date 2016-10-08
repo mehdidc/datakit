@@ -1,4 +1,4 @@
-from helpers import data_path, dict_apply, dict_apply_recur
+from helpers import data_path, dict_apply, dict_apply_recur, as_iterator
 import numpy as np
 import os
 
