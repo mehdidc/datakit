@@ -1,5 +1,5 @@
-import mnist
-import cifar
-import imagecollection
-import image
-import helpers
+from . import mnist
+from . import cifar
+from . import imagecollection
+from . import image
+from . import helpers

@@ -1,10 +1,7 @@
-from itertools import imap, cycle
-
 import numpy as np
-import os
 
-from helpers import data_path, as_iterator
-from constants import *
+from .helpers import data_path, as_iterator
+from .constants import ALL, TRAIN, TEST
 
 def load(which=ALL):
     assert which in (ALL, TRAIN, TEST)

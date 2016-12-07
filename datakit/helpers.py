@@ -1,7 +1,10 @@
-from itertools import imap, chain, repeat
-
-import numpy as  np
 import os
+try:
+    from itertools import imap
+except ImportError:
+    imap = map
+from itertools import chain
+from itertools import repeat
 
 DATA_PATH = os.getenv('DATA_PATH', '.')
 
@@ -11,7 +14,7 @@ def data_path(*args):
     return os.path.join(*args)
 
 def dict_apply_recur(d, fn, cols=None):
-    # apply a function of some cols (or all if None) 
+    # apply a function of some cols (or all if None)
     # on all first-depth elements of d
     # if d has 'train' and 'test', we return the same dict
     # but where d['train']['X'] and d['test']['X'] are transformed
@@ -59,13 +62,13 @@ def minibatch(iterator, batch_size=128):
 def expand_dict(iterator):
     # iterator elements must be a dict.
     # if the iterator elements are of the form [{'X':..., 'y':...}, {'X':..., 'y':...}]
-    # transform it to {'X': [...,...], 'y': [...., ...., ...]}
+    # transform it to iterator of {'X': [...,...], 'y': [...., ...., ...]}
     for data in iterator:
         assert type(data) == list
         keys = data[0].keys()
         out = {}
         for k in keys:
-            out[k] = map(lambda p:p[k], data)
+            out[k] = list(map(lambda p:p[k], data))
         yield out
 
 def as_iterator(data):
@@ -75,7 +78,7 @@ def as_iterator(data):
     assert len(set(map(len, data.values()))) == 1
     k = data.keys()
     nb_examples = len(data[k[0]])
-    iterator = imap(lambda i:{k: data[k][i] for k in data.keys()}, xrange(nb_examples))
+    iterator = imap(lambda i:{k: data[k][i] for k in data.keys()}, range(nb_examples))
     return iterator
 
 def load_as_iterator(load_fn,):

@@ -1,8 +1,9 @@
-from helpers import data_path, dict_apply, dict_apply_recur, as_iterator
 import numpy as np
-import os
 
-from constants import *
+from .helpers import data_path
+from .helpers import as_iterator
+
+from .constants import ALL
 
 def load(which=ALL, coarse_label=False):
     assert which in (ALL, 'train', 'test')

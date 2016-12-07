@@ -1,12 +1,10 @@
-from itertools import imap
-from itertools import cycle
-from functools import partial
+try:
+    from itertools import imap
+except ImportError:
+    imap = map
 
 from skimage.io import imread
-
-from helpers import bufferize, dict_apply, ncycles, minibatch, expand_dict
-
-from constants import *
+from .constants import TRAIN
 
 def load(filelist):
     X = build_image_loader_iterator(filelist)

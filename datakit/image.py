@@ -1,16 +1,19 @@
-from itertools import imap
+try:
+    from itertools import imap
+except ImportError:
+    imap = map
 from functools import partial
-import random
 import glob
 
 from skimage.transform import resize
 from skimage.util import pad
-from skimage.io import imread
 
 import numpy as np
 
 import datakit
-from helpers import dict_apply, minibatch, expand_dict, data_path, ncycles
+from .helpers import dict_apply
+from .helpers import data_path
+from .helpers import ncycles
 
 dataset_patterns = {
     'sketchy': 'sketchy/256x256/sketch/tx_000000000000/**/*.png',
@@ -53,8 +56,7 @@ def crop(img, shape=(1, 1), pos='random', mode='constant', rng=np.random):
         y = img_h // 2
         x = img_w // 2
     else:
-        raise Exception('Unkown mode')
-    out_img = np.empty((h, w, img_c))
+        raise Exception('Unkown mode "{}", expected "random"/"random_inside"/"center"'.format(pos))
     img_ = np.zeros((img_h + h, img_w + w, img_c))
     for c in range(img_c):
         img_[:, :, c] = pad(img[:, :, c], (h//2, w//2), str(mode))
@@ -116,7 +118,9 @@ def retrieve_col(col, rng=np.random):
     col = np.array(col)
     return col
 
-def random_colorize(X, fg_thresh=128, op='threshold', fg_color='random', bg_color='random', rng=np.random):
+def random_colorize(X, fg_thresh=128, op='threshold',
+                    fg_color='random', bg_color='random',
+                    rng=np.random):
     if X.shape[2] == 1:
         if op == 'threshold':
             fg_mask = (X > fg_thresh)
@@ -183,7 +187,9 @@ def pipeline_load_dataset(iterator, name, *args, **kwargs):
     module = getattr(datakit, name)
     return module.load_as_iterator(*args, **kwargs)
 
-def pipeline_load_toy(iterator, nb=100, w=28, h=28, ph=(1, 5), pw=(1, 5), nb_patches=1, rng=np.random, fg_color=None, bg_color=None, colored=False):
+def pipeline_load_toy(iterator, nb=100, w=28, h=28, ph=(1, 5), pw=(1, 5),
+                      nb_patches=1, rng=np.random, fg_color=None,
+                      bg_color=None, colored=False):
     nb_cols = 3 if colored else 1
     if not bg_color:
         bg_color = [0] * nb_cols
