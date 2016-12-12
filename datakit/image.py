@@ -11,10 +11,10 @@ from skimage.util import pad
 import numpy as np
 
 import datakit
+from .pipeline import pipeline_load
 from .helpers import apply_to
 from .helpers import data_path
 from .helpers import ncycles
-from .common import pipeline_load
 
 dataset_patterns = {
     'sketchy': 'sketchy/256x256/sketch/tx_000000000000/**/*.png',
