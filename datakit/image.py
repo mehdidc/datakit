@@ -11,9 +11,10 @@ from skimage.util import pad
 import numpy as np
 
 import datakit
-from .helpers import dict_apply
+from .helpers import apply_to
 from .helpers import data_path
 from .helpers import ncycles
+from .common import pipeline_load
 
 dataset_patterns = {
     'sketchy': 'sketchy/256x256/sketch/tx_000000000000/**/*.png',
@@ -34,12 +35,6 @@ dataset_patterns = {
     'faces94': 'faces94/**/**/*.jpg',
     'dlibfaces': 'dlibfaces/dlib_face_detection_dataset/**/**/*.png'
 }
-
-def apply_to(fn, cols=None):
-    def fn_(iterator, *args, **kwargs):
-        iterator = imap(partial(dict_apply, fn=partial(fn, *args, **kwargs), cols=cols), iterator)
-        return iterator
-    return fn_
 
 def crop(img, shape=(1, 1), pos='random', mode='constant', rng=np.random):
     # assumes img is shape (h, w, color)
@@ -230,9 +225,4 @@ operators = {
     'onehot': pipeline_onehot,
 }
 
-def pipeline_load(pipeline, operators=operators):
-    iterator = None
-    for op in pipeline:
-        name, params = op['name'], op['params']
-        iterator = operators[name](iterator, **params)
-    return iterator
+pipeline_load = partial(pipeline_load, operators=operators)

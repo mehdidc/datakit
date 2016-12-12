@@ -5,8 +5,15 @@ except ImportError:
     imap = map
 from itertools import chain
 from itertools import repeat
+from functools import partial
 
 DATA_PATH = os.getenv('DATA_PATH', '.')
+
+def apply_to(fn, cols=None):
+    def fn_(iterator, *args, **kwargs):
+        iterator = imap(partial(dict_apply, fn=partial(fn, *args, **kwargs), cols=cols), iterator)
+        return iterator
+    return fn_
 
 def data_path(*args):
     # append the DATA_PATH as prefix to path join
