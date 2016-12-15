@@ -183,13 +183,14 @@ def pipeline_load_dataset(iterator, name, *args, **kwargs):
     return module.load_as_iterator(*args, **kwargs)
 
 def pipeline_load_toy(iterator, nb=100, w=28, h=28, ph=(1, 5), pw=(1, 5),
-                      nb_patches=1, rng=np.random, fg_color=None,
+                      nb_patches=1, random_state=None, fg_color=None,
                       bg_color=None, colored=False):
     nb_cols = 3 if colored else 1
     if not bg_color:
         bg_color = [0] * nb_cols
     if not fg_color:
         fg_color = [255] * nb_cols
+    rng = np.random.RandomState(random_state)
     def fn():
         for _ in range(nb):
             bg_color_ = retrieve_col(bg_color, rng=rng)
