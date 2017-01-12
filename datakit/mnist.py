@@ -3,6 +3,7 @@ import numpy as np
 from .helpers import data_path, as_iterator
 from .constants import ALL, TRAIN, TEST
 
+
 def load(which=ALL):
     assert which in (ALL, TRAIN, TEST)
     data = {}
@@ -15,7 +16,7 @@ def load(which=ALL):
         y_train = np.array(y_train)
         data[TRAIN] = {'X': X_train, 'y': y_train}
     if which in (ALL, TEST):
-        X_test, y_test  = np.load(data_path('mnist', 'test.npy'))
+        X_test, y_test = np.load(data_path('mnist', 'test.npy'))
         X_test = list(X_test)
         y_test = list(y_test)
         X_test = np.array(X_test)
@@ -24,4 +25,4 @@ def load(which=ALL):
         data[TEST] = {'X': X_test, 'y': y_test}
     return data
 
-load_as_iterator = lambda which:as_iterator(load(which=which)[which])
+load_as_iterator = lambda which: as_iterator(load(which=which)[which])
