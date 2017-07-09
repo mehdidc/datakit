@@ -64,7 +64,7 @@ def pipeline_load_numpy(iterator, filename,
                 d[col] = data[col][:]
             _load_numpy_cache[filename] = d
     if nb is None:
-        nb = len(data[data.keys()[0]])
+        nb = len(data[list(data.keys())[0]])
 
     if shuffle:
         #WARNING

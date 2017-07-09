@@ -104,7 +104,7 @@ def as_iterator(data):
     # transform a data, which is a dict of the form of {'X':[x1, x2], 'y':[y1, y2]}, to an iterator
     # which yields elements of the form {'X': x1, 'y': y1} then {'X': x2, 'y': y2}
     assert len(set(map(len, data.values()))) == 1
-    k = data.keys()
+    k = list(data.keys())
     nb_examples = len(data[k[0]])
     iterator = map(lambda i: {k: data[k][i] for k in data.keys()}, range(nb_examples))
     return iterator

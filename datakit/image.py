@@ -140,8 +140,8 @@ def random_colorize(X, fg_thresh=128, op='threshold',
 
 
 def onehot(y, nb_classes=None):
-    z = np.zeros(nb_classes)
-    z[y] = 1
+    z = np.zeros((len(y), nb_classes))
+    z[np.arange(len(y)), y] = 1
     return z
 
 
