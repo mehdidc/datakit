@@ -1,0 +1,4 @@
+six
+numpy
+h5py
+scikit-image
